@@ -1,0 +1,22 @@
+{
+  "name": "flatty",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jutaz/flatty.git"
+  },
+  "author": "Justas Brazauskas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jutaz/flatty/issues"
+  },
+  "homepage": "https://github.com/jutaz/flatty",
+  "dependencies": {
+    "generate-key": "0.0.6"
+  }
+}
