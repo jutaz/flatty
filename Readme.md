@@ -101,5 +101,5 @@ pokemon.find({pokedex_id: 479, name: "Lapras"}, function(results) {
 
 ### Ticker
 
-Ticker is a function, that saves data to disk at certain interval. Data format is JSON, so it`s highly editable.
+Ticker is a function, that saves data to disk at certain interval. Data format is JSON, so it\`s highly editable.
 Currently interval is set to ```50ms```. But dont worry! It will not flood your drive, because it will write only if changes were made.
