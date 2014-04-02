@@ -1,7 +1,7 @@
 var fs = require("fs");
 var rand = require("generate-key");
 
-function engine(file) {
+function engine(file, options) {
   this.file = file;
   if(!fs.existsSync(this.file)) {
     fs.writeFileSync(this.file, "{}");
@@ -9,6 +9,7 @@ function engine(file) {
   this.data = JSON.parse(fs.readFileSync(this.file));
   this.ticker();
   this.changes = 0;
+  this.tickInterval = options.interval || 50;
 }
 
 engine.prototype.get = function(key, callback) {
@@ -98,7 +99,7 @@ engine.prototype.ticker = function() {
       }
       this.locked = false;
     }.bind(this));
-  }.bind(this), 50);
+  }.bind(this), this.interval);
   this.tick.unref();
 }
 
