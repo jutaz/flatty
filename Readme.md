@@ -11,7 +11,9 @@ install: ```npm install flatty```
 
 ```javascript
 var flatty = require("flatty");
-var pokemons = new flatty("./pokemons.json");
+var pokemons = new flatty("./pokemons.json", {
+    interval: 50 // In ms
+});
 ```
 ### Methods
 
