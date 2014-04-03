@@ -2,6 +2,9 @@ var fs = require("fs");
 var rand = require("generate-key");
 
 function engine(file, options) {
+  if(!options) {
+    options = {};
+  }
   this.file = file;
   if(!fs.existsSync(this.file)) {
     fs.writeFileSync(this.file, "{}");
