@@ -1,4 +1,5 @@
 var fs = require("fs");
+var path = require("path");
 var rand = require("generate-key");
 
 function engine(file, options) {
@@ -9,7 +10,11 @@ function engine(file, options) {
   if(!fs.existsSync(this.file)) {
     fs.writeFileSync(this.file, "{}");
   }
-  this.data = JSON.parse(fs.readFileSync(this.file));
+  if(path.extname(this.file) === ".json") {
+    this.data = JSON.parse(fs.readFileSync(this.file));
+  } else {
+    this.data = this.parse(fs.readFileSync(this.file));
+  }
   this.ticker();
   this.changes = 0;
   this.tickInterval = options.interval || 50;
@@ -95,7 +100,7 @@ engine.prototype.ticker = function() {
       return;
     }
     this.locked = true;
-    fs.writeFile(this.file, JSON.stringify(this.data), function(err) {
+    fs.writeFile(this.file, this.stringify(this.data), function(err) {
       if(err) {
         throw new Error(err);
       }
@@ -104,6 +109,26 @@ engine.prototype.ticker = function() {
     }.bind(this));
   }.bind(this), this.interval);
   this.tick.unref();
+}
+
+engine.prototype.stringify  = function(data, callback) {
+  processed = "";
+  for(var i in data) {
+    processed += i+"\t"+JSON.stringify(data)+"\n";
+  }
+  callback && callback(processed);
+  return parsed;
+}
+
+engine.prototype.parse = function(data, callback) {
+  parsed = {};
+  splitted = data.split("\n");
+  for(var i in splitted) {
+    spl = splitted[i].split("\t");
+    parsed[spl[0]] = JSON.parse(spl[1]);
+  }
+  callback && callback(parsed);
+  return parsed;
 }
 
 module.exports = engine;
