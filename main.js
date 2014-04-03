@@ -117,7 +117,7 @@ engine.prototype.stringify  = function(data, callback) {
     processed += i+"\t"+JSON.stringify(data)+"\n";
   }
   callback && callback(processed);
-  return parsed;
+  return processed;
 }
 
 engine.prototype.parse = function(data, callback) {
