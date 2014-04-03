@@ -92,12 +92,12 @@ engine.prototype.ticker = function() {
       return;
     }
     this.locked = true;
-    console.log(JSON.stringify(this.data));
     fs.writeFile(this.file, JSON.stringify(this.data), function(err) {
       if(err) {
         throw new Error(err);
       }
       this.locked = false;
+      this.changes = 0;
     }.bind(this));
   }.bind(this), this.interval);
   this.tick.unref();
