@@ -114,7 +114,7 @@ engine.prototype.ticker = function() {
 engine.prototype.stringify  = function(data, callback) {
   processed = "";
   for(var i in data) {
-    processed += i+"\t"+JSON.stringify(data)+"\n";
+    processed += i+"\t"+JSON.stringify(data[i])+"\n";
   }
   callback && callback(processed);
   return processed;
@@ -124,6 +124,9 @@ engine.prototype.parse = function(data, callback) {
   parsed = {};
   splitted = data.split("\n");
   for(var i in splitted) {
+    if(splitted[i] === '') {
+      continue;
+    }
     spl = splitted[i].split("\t");
     parsed[spl[0]] = JSON.parse(spl[1]);
   }
