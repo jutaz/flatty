@@ -16,8 +16,33 @@ function engine(file, options) {
     this.data = this.parse(fs.readFileSync(this.file));
   }
   this.ticker();
+  this.buildIndex();
   this.changes = 0;
   this.tickInterval = options.interval || 50;
+}
+
+engine.prototype.buildIndex = function() {
+  this.indexed = {};
+  for(var i in this.data) {
+    this.index(i);
+  }
+}
+
+engine.prototype.index = function(id, callback) {
+  collection = this.data[id];
+  for(var i in collection) {
+    if('object' !== typeof this.indexed[i]) {
+      this.indexed[i] = {};
+    }
+    if('array' !== typeof this.indexed[i][collection[i]]) {
+      this.indexed[i][collection[i]] = [];
+    }
+    if('string' === typeof collection[i] && collection.length < 1024) {
+      this.indexed[i][collection[i]].push(id);
+    } else if('number' === typeof collection[i]) {
+      this.indexed[i][collection[i]].push(id);
+    }
+  }
 }
 
 engine.prototype.get = function(key, callback) {
@@ -70,6 +95,8 @@ engine.prototype.delete = function(key, callback) {
   if(this.data[key] && 'object' == typeof this.data[key]) {
     this.data[key] = null;
     delete this.data[key];
+  } else if('function' === typeof key) {
+    this.data = {};
   }
   callback && callback();
   this.changes++;
