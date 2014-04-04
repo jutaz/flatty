@@ -122,7 +122,7 @@ engine.prototype.stringify  = function(data, callback) {
 
 engine.prototype.parse = function(data, callback) {
   parsed = {};
-  splitted = data.split("\n");
+  splitted = data.toString().split("\n");
   for(var i in splitted) {
     if(splitted[i] === '') {
       continue;
