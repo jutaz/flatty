@@ -98,6 +98,7 @@ engine.prototype.delete = function(key, callback) {
   } else if('function' === typeof key) {
     this.data = {};
     this.indexed = {};
+    callback = key;
   }
   callback && callback();
   this.changes++;
