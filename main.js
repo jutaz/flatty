@@ -37,7 +37,7 @@ engine.prototype.index = function(id, callback) {
     if('object' !== typeof this.indexed[i]) {
       this.indexed[i] = {};
     }
-    if('array' !== typeof this.indexed[i][collection[i]]) {
+    if(this.indexed[i][collection[i]] instanceof Array) {
       this.indexed[i][collection[i]] = [];
     }
     if('string' === typeof collection[i] && collection[i].length < 1024) {
