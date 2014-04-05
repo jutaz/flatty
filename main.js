@@ -31,13 +31,16 @@ engine.prototype.buildIndex = function() {
 engine.prototype.index = function(id, callback) {
   collection = this.data[id];
   for(var i in collection) {
+    if(i === "id") {
+      continue;
+    }
     if('object' !== typeof this.indexed[i]) {
       this.indexed[i] = {};
     }
     if('array' !== typeof this.indexed[i][collection[i]]) {
       this.indexed[i][collection[i]] = [];
     }
-    if('string' === typeof collection[i] && collection.length < 1024) {
+    if('string' === typeof collection[i] && collection[i].length < 1024) {
       this.indexed[i][collection[i]].push(id);
     } else if('number' === typeof collection[i]) {
       this.indexed[i][collection[i]].push(id);
@@ -80,6 +83,7 @@ engine.prototype.set = function(key, data, callback) {
   }
   this.data[key] = data;
   callback && callback(key);
+  this.index(key);
   this.changes++;
 }
 
@@ -106,20 +110,24 @@ engine.prototype.delete = function(key, callback) {
 
 engine.prototype.find = function(obj, callback) {
   ret = [];
-  for(var i in this.data) {
-    matches = 0;
-    for(var e in obj) {
-      if(this.data[i][e] == obj[e]) {
-        matches++;
+  encounters = {};
+  search = Object.keys(obj);
+  for(var i in search) {
+    if(this.indexed[search[i]] && this.indexed[search[i]][obj[search[i]]]) {
+      for(var s in this.indexed[search[i]][obj[search[i]]]) {
+        if(!encounters[this.indexed[search[i]][obj[search[i]]][s]]) {
+          encounters[this.indexed[search[i]][obj[search[i]]][s]] = 0;
+        }
+        encounters[this.indexed[search[i]][obj[search[i]]][s]]++;
       }
     }
-    if(matches === Object.keys(obj).length) {
-      dat = this.data[i];
-      dat.id = i;
-      ret.push(dat);
+  }
+  for(var e in encounters) {
+    if(encounters[e] === search.length) {
+      ret.push(this.data[e]);
     }
   }
-  callback && callback(ret);
+  callback && callback((ret.length > 0) ? ret : null);
 }
 
 engine.prototype.ticker = function() {
