@@ -16,7 +16,8 @@ describe('Flatty', function() {
   fs.writeFileSync(__dirname + "/test.db", "");
   it("should return a new instance of flatty", function() {
     db = new flatty(__dirname + "/test.db", {
-      interval: 20
+      interval: 20,
+      index: true
     });
     expect(db).to.be.an("object").and.to.be.a(flatty);
     describe('#set()', function() {
@@ -77,7 +78,8 @@ describe('Flatty', function() {
 describe("Flatty stress test", function() {
   fs.writeFileSync(__dirname + "/stress.db", "");
   var db = new flatty(__dirname + "/stress.db", {
-    interval: 20
+    interval: 20,
+    index: true
   });
   describe("#set()", function() {
     it("shold set 1000 records", function(done) {

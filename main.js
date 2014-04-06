@@ -15,15 +15,15 @@ function engine(file, options) {
   } else {
     this.data = this.parse(fs.readFileSync(this.file));
   }
-  this.ticker();
-  this.buildIndex();
   this.changes = 0;
   this.tickInterval = options.interval || 50;
   this.options = options;
+  this.ticker();
+  this.buildIndex();
 }
 
 engine.prototype.buildIndex = function() {
-  if (this.options.buildIndex) {
+  if (this.options.index) {
     this.indexed = {};
     for (var i in this.data) {
       this.index(i);
@@ -34,6 +34,9 @@ engine.prototype.buildIndex = function() {
 }
 
 engine.prototype.index = function(id, callback) {
+  if(!this.options.index) {
+    return;
+  }
   collection = this.data[id];
   for (var i in collection) {
     if (i === "id") {
@@ -42,7 +45,7 @@ engine.prototype.index = function(id, callback) {
     if ('object' !== typeof this.indexed[i]) {
       this.indexed[i] = {};
     }
-    if (this.indexed[i][collection[i]] instanceof Array) {
+    if (!Array.isArray(this.indexed[i][collection[i]])) {
       this.indexed[i][collection[i]] = [];
     }
     if ('string' === typeof collection[i] && collection[i].length < 1024) {
