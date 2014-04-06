@@ -90,6 +90,7 @@ engine.prototype.set = function(key, data, callback) {
     return;
   }
   this.data[key] = data;
+  this.data[key].id = key;
   callback && callback(key);
   this.index(key);
   this.changes++;
@@ -192,6 +193,7 @@ engine.prototype.parse = function(data, callback) {
     }
     spl = splitted[i].split("\t");
     parsed[spl[0]] = JSON.parse(spl[1]);
+    parsed[spl[0]].id = spl[0];
   }
   callback && callback(parsed);
   return parsed;
