@@ -135,7 +135,7 @@ engine.prototype.find = function(obj, callback) {
       ret.push(this.data[e]);
     }
   }
-  callback && callback((ret.length > 0) ? ret : null);
+  callback && callback(ret);
 }
 
 engine.prototype.findRecursive = function(obj, callback) {
@@ -153,7 +153,7 @@ engine.prototype.findRecursive = function(obj, callback) {
       }
     }
   }
-  callback && callback((ret.length > 0) ? ret : null)
+  callback && callback(ret)
 }
 
 engine.prototype.ticker = function() {
