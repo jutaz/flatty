@@ -1,6 +1,8 @@
 var fs = require("fs");
 var path = require("path");
+var util = require("util");
 var rand = require("generate-key");
+var eventEmitter = require("event").EventEmitter;
 
 function engine(file, options) {
   if (!options) {
@@ -15,12 +17,15 @@ function engine(file, options) {
   } else {
     this.data = this.parse(fs.readFileSync(this.file));
   }
+  this.on("option:change", this.onOptionChange.bind(this));
   this.changes = 0;
   this.tickInterval = options.interval || 50;
   this.options = options;
   this.ticker();
   this.buildIndex();
 }
+
+util.inherits(engine, eventEmitter);
 
 engine.prototype.buildIndex = function() {
   if (this.options.index) {
@@ -34,7 +39,7 @@ engine.prototype.buildIndex = function() {
 }
 
 engine.prototype.index = function(id, callback) {
-  if(!this.options.index) {
+  if (!this.options.index) {
     return;
   }
   collection = this.data[id];
@@ -115,6 +120,21 @@ engine.prototype.delete = function(key, callback) {
   }
   callback && callback();
   this.changes++;
+}
+
+engine.prototype.option = function(key, val, callback) {
+  this.options[key] = val;
+  this.emit("option:change", key, val);
+}
+
+engine.prototype.onOptionChange = function(key, val) {
+  if(key === "index") {
+    if(val) {
+      this.buildIndex();
+    } else {
+      this.indexed = {};
+    }
+  }
 }
 
 engine.prototype.find = function(obj, callback) {
