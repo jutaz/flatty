@@ -20,6 +20,7 @@ function engine(file, options) {
   this.on("option:change", this.onOptionChange.bind(this));
   this.changes = 0;
   this.tickInterval = options.interval || 50;
+  this.separator = options.separator || "\t";
   this.options = options;
   this.ticker();
   this.buildIndex();
@@ -222,7 +223,7 @@ engine.prototype.parse = function(data, callback) {
     if (splitted[i] === '') {
       continue;
     }
-    spl = splitted[i].split("\t");
+    spl = splitted[i].substring(splitted[i].indexOf(this.separator)+1);
     parsed[spl[0]] = JSON.parse(spl[1]);
     parsed[spl[0]].id = spl[0];
   }
