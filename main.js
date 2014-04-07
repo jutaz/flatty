@@ -99,6 +99,7 @@ engine.prototype.set = function(key, data, callback) {
   callback && callback(key);
   this.index(key);
   this.changes++;
+  this.emit("record:set", key);
 }
 
 engine.prototype.update = function(key, data, callback) {
@@ -107,6 +108,7 @@ engine.prototype.update = function(key, data, callback) {
   }
   callback && callback(key);
   this.changes++;
+  this.emit("record:update", key);
 }
 
 engine.prototype.delete = function(key, callback) {
@@ -120,6 +122,7 @@ engine.prototype.delete = function(key, callback) {
   }
   callback && callback();
   this.changes++;
+  this.emit("record:delete", key);
 }
 
 engine.prototype.option = function(key, val, callback) {
@@ -157,6 +160,7 @@ engine.prototype.find = function(obj, callback) {
     }
   }
   callback && callback(ret);
+  this.emit("record:find", ret);
 }
 
 engine.prototype.findRecursive = function(obj, callback) {
@@ -174,7 +178,8 @@ engine.prototype.findRecursive = function(obj, callback) {
       }
     }
   }
-  callback && callback(ret)
+  callback && callback(ret);
+  this.emit("record:find", ret, true);
 }
 
 engine.prototype.ticker = function() {
