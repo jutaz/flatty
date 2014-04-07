@@ -210,7 +210,7 @@ engine.prototype.ticker = function() {
 engine.prototype.stringify = function(data, callback) {
   processed = "";
   for (var i in data) {
-    processed += i + "\t" + JSON.stringify(data[i]) + "\n";
+    processed += i + this.separator + JSON.stringify(data[i]) + "\n";
   }
   callback && callback(processed);
   return processed;
