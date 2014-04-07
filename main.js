@@ -33,8 +33,6 @@ engine.prototype.buildIndex = function() {
     for (var i in this.data) {
       this.index(i);
     }
-  } else {
-    this.find = this.findRecursive;
   }
 }
 
@@ -141,6 +139,14 @@ engine.prototype.onOptionChange = function(key, val) {
 }
 
 engine.prototype.find = function(obj, callback) {
+  if (this.options.index) {
+    this.findIndexed(obj, callback)
+  } else {
+    this.findRecursive(obj, callback);
+  }
+}
+
+engine.prototype.findIndexed = function(obj, callback) {
   ret = [];
   encounters = {};
   search = Object.keys(obj);
