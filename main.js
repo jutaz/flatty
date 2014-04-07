@@ -129,8 +129,8 @@ engine.prototype.option = function(key, val, callback) {
 }
 
 engine.prototype.onOptionChange = function(key, val) {
-  if(key === "index") {
-    if(val) {
+  if (key === "index") {
+    if (val) {
       this.buildIndex();
     } else {
       this.indexed = {};
