@@ -19,11 +19,15 @@ function engine(file, options) {
   }
   this.on("option:change", this.onOptionChange.bind(this));
   this.changes = 0;
+  this.logStore = [];
   this.tickInterval = options.interval || 50;
   this.separator = options.separator || "\t";
   this.options = options;
   this.ticker();
   this.buildIndex();
+  ["delete", "update", "set"].forEach(function(event) {
+    this.on("record:" + event, this.log.bind(this, event))
+  }.bind(this));
 }
 
 util.inherits(engine, eventEmitter);
@@ -57,6 +61,16 @@ engine.prototype.index = function(id, callback) {
     } else if ('number' === typeof collection[i]) {
       this.indexed[i][collection[i]].push(id);
     }
+  }
+}
+
+engine.prototype.log = function(action, data) {
+  if (this.options.log) {
+    this.logStore.push({
+      action: action,
+      data: data,
+      time: new Date().getTime()
+    });
   }
 }
 
