@@ -223,7 +223,7 @@ engine.prototype.parse = function(data, callback) {
     if (splitted[i] === '') {
       continue;
     }
-    spl = splitted[i].substring(splitted[i].indexOf(this.separator)+1);
+    spl = splitted[i].substring(splitted[i].indexOf(this.separator) + 1);
     parsed[spl[0]] = JSON.parse(spl[1]);
     parsed[spl[0]].id = spl[0];
   }
