@@ -79,7 +79,8 @@ describe("Flatty stress test", function() {
   fs.writeFileSync(__dirname + "/stress.db", "");
   var db = new flatty(__dirname + "/stress.db", {
     interval: 20,
-    index: true
+    index: true,
+    log: true
   });
   describe("#set()", function() {
     it("shold set 1000 records", function(done) {
@@ -122,7 +123,8 @@ describe("Flatty stress test", function() {
   describe("#get()", function() {
     it("should try to get nonexistant record", function(done) {
       db.get(rand.generateKey()+rand.generateKey(), function(record) {
-        expect(record).to.be.equal(null);
+        expect(record).to.be.an("array");
+        expect(record.length)to.be.equal(0);
         done();
       });
     });
