@@ -2,7 +2,7 @@ var fs = require("fs");
 var path = require("path");
 var util = require("util");
 var rand = require("generate-key");
-var eventEmitter = require("event").EventEmitter;
+var eventEmitter = require("events").EventEmitter;
 
 function engine(file, options) {
   if (!options) {
