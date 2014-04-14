@@ -104,6 +104,19 @@ pokemon.find({pokedex_id: 479, name: "Lapras"}, function(results) {
 });
 ```
 
+#### option(key, val)
+
+Options:
+
+* ```key``` - option name
+* ```val``` - options value
+
+Example:
+
+```javascript
+pokemon.option("index", true);
+```
+
 ### Ticker
 
 Ticker is a function, that saves data to disk at certain interval. Data format is JSON or native format, which looks like `ID\t{data: "stuff"}\n`, so it\`s highly editable and readable.
