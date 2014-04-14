@@ -1,6 +1,13 @@
 function SLJStore(options) {
+  if(!options) {
+    options = {};
+  }
   this.separator = options.separator || "\t";
   this.lineEnding = options.lineEnd || "\n";
+}
+
+SLJStore.prototype.init = function() {
+  return "";
 }
 
 SLJStore.prototype.stringify = function(data, callback) {
@@ -12,7 +19,7 @@ SLJStore.prototype.stringify = function(data, callback) {
   return processed;
 }
 
-SLJStore.prototype.parse = function(data, callbac) {
+SLJStore.prototype.parse = function(data, callback) {
   parsed = {};
   splitted = data.toString().split(this.lineEnding);
   for (var i in splitted) {
