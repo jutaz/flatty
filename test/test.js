@@ -100,18 +100,18 @@ describe("Flatty stress test", function() {
         i++;
       }
     });
-    it("should set 1000000 records", function(done) {
+    it("should set 100000 records", function(done) {
       db.delete(function() {
         completed = 0;
         i = 0;
-        while (i < 1000000) {
+        while (i < 100000) {
           db.set({
             name: rand.generateKey(),
             password: rand.generateKey()
           }, function() {
             completed++;
-            if (completed === 1000000) {
-              expect(Object.keys(db.data).length).to.be.equal(1000000);
+            if (completed === 100000) {
+              expect(Object.keys(db.data).length).to.be.equal(100000);
               done();
             }
           });
@@ -123,8 +123,7 @@ describe("Flatty stress test", function() {
   describe("#get()", function() {
     it("should try to get nonexistant record", function(done) {
       db.get(rand.generateKey()+rand.generateKey(), function(record) {
-        expect(record).to.be.an("array");
-        expect(record.length).to.be.equal(0);
+        expect(record).to.be.equal(null);
         done();
       });
     });
@@ -132,7 +131,7 @@ describe("Flatty stress test", function() {
   describe("#find()", function() {
     it("should try to find nonexistant record", function(done) {
       db.find({name: rand.generateKey()+rand.generateKey()}, function(record) {
-        expect(record).to.be.equal(null);
+        expect(record).to.be.an("array");
         done();
       });
     });
