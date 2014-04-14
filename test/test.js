@@ -124,7 +124,7 @@ describe("Flatty stress test", function() {
     it("should try to get nonexistant record", function(done) {
       db.get(rand.generateKey()+rand.generateKey(), function(record) {
         expect(record).to.be.an("array");
-        expect(record.length)to.be.equal(0);
+        expect(record.length).to.be.equal(0);
         done();
       });
     });
