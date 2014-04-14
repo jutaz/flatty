@@ -129,12 +129,14 @@ engine.prototype.delete = function(key, callback) {
     var data = this.data[key];
     this.data[key] = null;
     delete this.data[key];
-    for (var i in data) {
-      if (this.indexed[i] && this.indexed[i][data[i]]) {
-        index = this.indexed[i][data[i]].indexOf(data.id);
-        if (index > -1) {
-          this.indexed[i][data[i]][index] = null;
-          delete this.indexed[i][data[i]][index];
+    if (this.options.index) {
+      for (var i in data) {
+        if (this.indexed[i] && this.indexed[i][data[i]]) {
+          index = this.indexed[i][data[i]].indexOf(data.id);
+          if (index > -1) {
+            this.indexed[i][data[i]][index] = null;
+            delete this.indexed[i][data[i]][index];
+          }
         }
       }
     }
