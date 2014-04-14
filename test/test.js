@@ -108,7 +108,8 @@ describe("Flatty stress test", function() {
           db.set({
             name: rand.generateKey(),
             password: rand.generateKey(),
-            likes: (Math.floor(Math.random() * (2 - 1) + 1) === 1) ? "Cake" : "Hamburger"
+            likes: (Math.floor(Math.random() * (3 - 1) + 1) === 1) ? "Cake" : "Hamburger",
+            pet: (Math.floor(Math.random() * (3 - 1) + 1) === 1) ? "Cat" : "Dog"
           }, function() {
             completed++;
             if (completed === 100000) {
@@ -168,7 +169,7 @@ describe("Flatty stress test", function() {
       });
     });
     it("should pick multiple records", function(done) {
-      db.findRecursive({likes: "Cake"}, function(data) {
+      db.findRecursive({likes: "Cake", pet: "Cat"}, function(data) {
         expect(data).to.be.an("array");
         expect(data.length).to.be.above(1);
         done();
@@ -186,7 +187,7 @@ describe("Flatty stress test", function() {
       });
     });
     it("should pick multiple records", function(done) {
-      db.findIndexed({likes: "Cake"}, function(data) {
+      db.findIndexed({likes: "Cake", pet: "Cat"}, function(data) {
         expect(data).to.be.an("array");
         expect(data.length).to.be.above(1);
         done();

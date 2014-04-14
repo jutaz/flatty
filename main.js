@@ -182,22 +182,22 @@ engine.prototype.find = function(obj, callback) {
 engine.prototype.findIndexed = function(obj, callback) {
   ret = [];
   encounters = {};
+  arr = [];
   search = Object.keys(obj);
   for (var i in search) {
     if (this.indexed[search[i]] && this.indexed[search[i]][obj[search[i]]]) {
-      for (var s in this.indexed[search[i]][obj[search[i]]]) {
-        if (!encounters[this.indexed[search[i]][obj[search[i]]][s]]) {
-          encounters[this.indexed[search[i]][obj[search[i]]][s]] = 0;
-        }
-        encounters[this.indexed[search[i]][obj[search[i]]][s]]++;
-      }
+      arr = arr.concat(this.indexed[search[i]][obj[search[i]]]);
     }
   }
-  for (var e in encounters) {
-    if (encounters[e] === search.length) {
-      ret.push(this.data[e]);
+  arr.forEach(function(item) {
+    if (!encounters[item]) {
+      encounters[item] = 0;
     }
-  }
+    encounters[item]++;
+    if (encounters[item] === search.length) {
+      ret.push(this.data[item]);
+    }
+  }, this);
   callback && callback(ret);
   this.emit("record:find", ret);
 }
