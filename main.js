@@ -126,8 +126,18 @@ engine.prototype.update = function(key, data, callback) {
 
 engine.prototype.delete = function(key, callback) {
   if (this.data[key] && 'object' == typeof this.data[key]) {
+    var data = this.data[key];
     this.data[key] = null;
     delete this.data[key];
+    for (var i in data) {
+      if (this.indexed[i] && this.indexed[i][data[i]]) {
+        index = this.indexed[i][data[i]].indexOf(data.id);
+        if (index > -1) {
+          this.indexed[i][data[i]][index] = null;
+          delete this.indexed[i][data[i]][index];
+        }
+      }
+    }
   } else if ('function' === typeof key) {
     this.data = {};
     this.indexed = {};
