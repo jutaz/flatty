@@ -3,7 +3,7 @@ function SLJStore(options) {
   this.lineEnding = options.lineEnd || "\n";
 }
 
-SLJStore.prototype.stringify = function() {
+SLJStore.prototype.stringify = function(data, callback) {
   processed = "";
   for (var i in data) {
     processed += i + this.separator + JSON.stringify(data[i]) + this.lineEnding;
@@ -12,7 +12,7 @@ SLJStore.prototype.stringify = function() {
   return processed;
 }
 
-SLJStore.prototype.parse = function() {
+SLJStore.prototype.parse = function(data, callbac) {
   parsed = {};
   splitted = data.toString().split(this.lineEnding);
   for (var i in splitted) {
