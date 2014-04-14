@@ -1,7 +1,7 @@
 # Flatty
 
 This library was build for quickly testing API using local DB. Also can be used as non-failing, always reachable DB used for presentations (This is why it was created).
-This module is small ~100 LOC.
+This module is small ~300 LOC.
 
 > Be warned, that it is not stable and API is subject to change.
 
