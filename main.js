@@ -118,6 +118,14 @@ engine.prototype.set = function(key, data, callback) {
 engine.prototype.update = function(key, data, callback) {
   for (var i in data) {
     this.data[key][i] = data[i];
+    if (this.options.index) {
+      if (this.indexed[i] && this.indexed[i][data[i]]) {
+        if (!Array.isArray(this.indexed[i][data[i]])) {
+          this.indexed[i][data[i]] = [];
+        }
+        this.indexed[i][data[i]].push(data.id);
+      }
+    }
   }
   callback && callback(key);
   this.changes++;
