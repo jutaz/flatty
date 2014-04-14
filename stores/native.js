@@ -1,4 +1,4 @@
-function SLJStore(options) {
+function nativeStore(options) {
   if(!options) {
     options = {};
   }
@@ -6,11 +6,11 @@ function SLJStore(options) {
   this.lineEnding = options.lineEnd || "\n";
 }
 
-SLJStore.prototype.init = function() {
+nativeStore.prototype.init = function() {
   return "";
 }
 
-SLJStore.prototype.stringify = function(data, callback) {
+nativeStore.prototype.stringify = function(data, callback) {
   processed = "";
   for (var i in data) {
     processed += i + this.separator + JSON.stringify(data[i]) + this.lineEnding;
@@ -19,7 +19,7 @@ SLJStore.prototype.stringify = function(data, callback) {
   return processed;
 }
 
-SLJStore.prototype.parse = function(data, callback) {
+nativeStore.prototype.parse = function(data, callback) {
   parsed = {};
   splitted = data.toString().split(this.lineEnding);
   for (var i in splitted) {
@@ -34,4 +34,4 @@ SLJStore.prototype.parse = function(data, callback) {
   return parsed;
 }
 
-module.exports = SLJStore;
+module.exports = nativeStore;

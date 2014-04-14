@@ -3,7 +3,7 @@ var path = require("path");
 var util = require("util");
 var rand = require("generate-key");
 var eventEmitter = require("events").EventEmitter;
-var SLJStore = require("./stores/SingleLineJson");
+var SLJStore = require("./stores/native");
 
 function engine(file, options) {
   if (!options) {
