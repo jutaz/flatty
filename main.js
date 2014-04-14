@@ -147,8 +147,10 @@ engine.prototype.onOptionChange = function(key, val) {
   if (key === "index") {
     if (val) {
       this.buildIndex();
+      this.find = this.findIndexed;
     } else {
       this.indexed = {};
+      this.find = this.findRecursive;
     }
   }
 }
