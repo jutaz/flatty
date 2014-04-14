@@ -3,25 +3,22 @@ var path = require("path");
 var util = require("util");
 var rand = require("generate-key");
 var eventEmitter = require("events").EventEmitter;
+var SLJStore = require("./stores/SingleLineJson");
 
 function engine(file, options) {
   if (!options) {
     options = {};
   }
   this.file = file;
+  this.store = options.store || new SLJStore();
   if (!fs.existsSync(this.file)) {
-    fs.writeFileSync(this.file, "{}");
+    fs.writeFileSync(this.file, this.store.init());
   }
-  if (path.extname(this.file) === ".json") {
-    this.data = JSON.parse(fs.readFileSync(this.file));
-  } else {
-    this.data = this.parse(fs.readFileSync(this.file));
-  }
+  this.data = this.store.parse(fs.readFileSync(this.file));
   this.on("option:change", this.onOptionChange.bind(this));
   this.changes = 0;
   this.logStore = [];
   this.tickInterval = options.interval || 50;
-  this.separator = options.separator || "\t";
   this.options = options;
   this.ticker();
   this.buildIndex();
@@ -239,37 +236,13 @@ engine.prototype.save = function() {
     return;
   }
   this.locked = true;
-  fs.writeFile(this.file, this.stringify(this.data), function(err) {
+  fs.writeFile(this.file, this.store.stringify(this.data), function(err) {
     if (err) {
       throw new Error(err);
     }
     this.locked = false;
     this.changes = 0;
   }.bind(this));
-}
-
-engine.prototype.stringify = function(data, callback) {
-  processed = "";
-  for (var i in data) {
-    processed += i + this.separator + JSON.stringify(data[i]) + "\n";
-  }
-  callback && callback(processed);
-  return processed;
-}
-
-engine.prototype.parse = function(data, callback) {
-  parsed = {};
-  splitted = data.toString().split("\n");
-  for (var i in splitted) {
-    if (splitted[i] === '') {
-      continue;
-    }
-    spl = splitted[i].substring(splitted[i].indexOf(this.separator) + 1);
-    parsed[spl[0]] = JSON.parse(spl[1]);
-    parsed[spl[0]].id = spl[0];
-  }
-  callback && callback(parsed);
-  return parsed;
 }
 
 module.exports = engine;
