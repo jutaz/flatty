@@ -117,6 +117,14 @@ Example:
 pokemon.option("index", true);
 ```
 
+### Events
+
+`record:set` - callback: `fn(key)`. Key is id of record.
+`record:update` - callback: `fn(key)`. Key is id of record.
+`record:delete` - callback: `fn(key)`. Key is id of record.
+
+`option:change` - Emitted when option has changed.
+
 ### Ticker
 
 Ticker is a function, that saves data to disk at certain interval. Data format is JSON or native format, which looks like `ID\t{data: "stuff"}\n`, so it\`s highly editable and readable.
