@@ -109,8 +109,8 @@ engine.prototype.set = function(key, data, callback) {
   }
   this.data[key] = data;
   this.data[key].id = key;
-  callback && callback(key);
   this.index(key);
+  callback && callback(key);
   this.changes++;
   this.emit("record:set", key);
 }
