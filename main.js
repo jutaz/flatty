@@ -3,14 +3,14 @@ var path = require("path");
 var util = require("util");
 var rand = require("generate-key");
 var eventEmitter = require("events").EventEmitter;
-var SLJStore = require("./stores/native");
+var nativeStore = require("./stores/native");
 
 function engine(file, options) {
   if (!options) {
     options = {};
   }
   this.file = file;
-  this.store = options.store || new SLJStore();
+  this.store = options.store || new nativeStore();
   if (!fs.existsSync(this.file)) {
     fs.writeFileSync(this.file, this.store.init());
   }
