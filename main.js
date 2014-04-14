@@ -17,7 +17,6 @@ function engine(file, options) {
   this.data = this.store.parse(fs.readFileSync(this.file));
   this.on("option:change", this.onOptionChange.bind(this));
   this.changes = 0;
-  this.logStore = [];
   this.tickInterval = options.interval || 50;
   this.options = options;
   this.ticker();
