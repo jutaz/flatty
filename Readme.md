@@ -11,8 +11,11 @@ install: ```npm install flatty```
 
 ```javascript
 var flatty = require("flatty");
+var Store = require("flatty/stores/native");
+
 var pokemons = new flatty("./pokemons.json", {
-    interval: 50 // In ms
+    interval: 50, // In ms
+    store: new Store()
 });
 ```
 ### Methods
@@ -103,5 +106,5 @@ pokemon.find({pokedex_id: 479, name: "Lapras"}, function(results) {
 
 ### Ticker
 
-Ticker is a function, that saves data to disk at certain interval. Data format is JSON or native format, which looks like `ID\n{data: "stuff"}\n`, so it\`s highly editable.
+Ticker is a function, that saves data to disk at certain interval. Data format is JSON or native format, which looks like `ID\t{data: "stuff"}\n`, so it\`s highly editable and readable.
 Currently interval is set to ```50ms```. But dont worry! It will not flood your drive, because it will write only if changes were made.
