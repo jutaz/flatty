@@ -63,7 +63,7 @@ engine.prototype.index = function(id, callback) {
 
 engine.prototype.log = function(action, data) {
   if (this.options.log) {
-    this.logStore.push({
+    this.emit("log:new", {
       action: action,
       data: data,
       time: new Date().getTime()
