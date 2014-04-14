@@ -107,7 +107,8 @@ describe("Flatty stress test", function() {
         while (i < 100000) {
           db.set({
             name: rand.generateKey(),
-            password: rand.generateKey()
+            password: rand.generateKey(),
+            likes: (Math.floor(Math.random() * (2 - 1) + 1) === 1) ? "Cake" : "Hamburger"
           }, function() {
             completed++;
             if (completed === 100000) {
