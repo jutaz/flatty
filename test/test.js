@@ -136,6 +136,48 @@ describe("Flatty stress test", function() {
       });
     });
   });
+  describe("#option()", function() {
+    it("should set index option to false", function(done) {
+      db.once("option:change", function(key, val) {
+        expect(key).to.be.a("string").and.to.be.equal("index");
+        expect(val).to.be.a("boolean").and.to.be.equal(false);
+        expect(db.options.index).to.be.a("boolean").and.to.be.equal(false);
+        done();
+      });
+      db.option("index", false);
+    });
+    it("should set index option to true", function(done) {
+      db.once("option:change", function(key, val) {
+        expect(key).to.be.a("string").and.to.be.equal("index");
+        expect(val).to.be.a("boolean").and.to.be.equal(true);
+        expect(db.options.index).to.be.a("boolean").and.to.be.equal(true);
+        done();
+      });
+      db.option("index", true);
+    });
+  });
+  describe("#findRecursive()", function() {
+    it("should pick one record", function(done) {
+      var record = db.data[Object.keys(db.data)[0]];
+      db.findRecursive({name: record.name}, function(data) {
+        expect(data).to.be.an("array");
+        expect(data.length).to.be.equal(1);
+        expect(data[0]).to.be.equal(record);
+        done();
+      });
+    });
+  });
+  describe("#findIndexed()", function() {
+    it("should pick one record", function(done) {
+      var record = db.data[Object.keys(db.data)[0]];
+      db.findIndexed({name: record.name}, function(data) {
+        expect(data).to.be.an("array");
+        expect(data.length).to.be.equal(1);
+        expect(data[0]).to.be.equal(record);
+        done();
+      });
+    });
+  });
 });
 
 after(function() {
