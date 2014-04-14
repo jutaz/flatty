@@ -228,19 +228,24 @@ engine.prototype.findRecursive = function(obj, callback) {
 engine.prototype.ticker = function() {
   this.locked = false;
   this.tick = setInterval(function() {
-    if (this.locked || this.changes == 0) {
-      return;
-    }
-    this.locked = true;
-    fs.writeFile(this.file, this.stringify(this.data), function(err) {
-      if (err) {
-        throw new Error(err);
-      }
-      this.locked = false;
-      this.changes = 0;
-    }.bind(this));
+    this.save();
+    this.log("memoryUsage", process.memoryUsage());
   }.bind(this), this.interval);
   this.tick.unref();
+}
+
+engine.prototype.save = function() {
+  if (this.locked || this.changes == 0) {
+    return;
+  }
+  this.locked = true;
+  fs.writeFile(this.file, this.stringify(this.data), function(err) {
+    if (err) {
+      throw new Error(err);
+    }
+    this.locked = false;
+    this.changes = 0;
+  }.bind(this));
 }
 
 engine.prototype.stringify = function(data, callback) {
