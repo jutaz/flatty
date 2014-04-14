@@ -167,6 +167,13 @@ describe("Flatty stress test", function() {
         done();
       });
     });
+    it("should pick multiple records", function(done) {
+      db.findRecursive({likes: "Cake"}, function(data) {
+        expect(data).to.be.an("array");
+        expect(data.length).to.be.above(1);
+        done();
+      });
+    });
   });
   describe("#findIndexed()", function() {
     it("should pick one record", function(done) {
@@ -175,6 +182,13 @@ describe("Flatty stress test", function() {
         expect(data).to.be.an("array");
         expect(data.length).to.be.equal(1);
         expect(data[0]).to.be.equal(record);
+        done();
+      });
+    });
+    it("should pick multiple records", function(done) {
+      db.findIndexed({likes: "Cake"}, function(data) {
+        expect(data).to.be.an("array");
+        expect(data.length).to.be.above(1);
         done();
       });
     });
