@@ -24,19 +24,19 @@ nativeStore.prototype.parse = function(data, callback) {
   data = data.toString();
   if(data.indexOf("meta: ") === 0) {
     newlinePos = data.indexOf("\n");
-    meta = JSON.parse(data.substr(6, newlinePos));
+    meta = JSON.parse(data.substr(6, newlinePos-6));
     this.separator = meta.separator;
     this.lineEnding = meta.lineEnding;
-    data = data.substr(newlinePos);
+    data = data.substr(newlinePos+1);
   }
   splitted = data.split(this.lineEnding);
   for (var i in splitted) {
     if (splitted[i] === '') {
       continue;
     }
-    spl = splitted[i].substring(splitted[i].indexOf(this.separator) + 1);
-    parsed[spl[0]] = JSON.parse(spl[1]);
-    parsed[spl[0]].id = spl[0];
+    id = splitted[i].substring(0, splitted[i].indexOf(this.separator));
+    parsed[id] = JSON.parse(splitted[i].substring(splitted[i].indexOf(this.separator) + 1));
+    parsed[id].id = id;
   }
   callback && callback(parsed);
   return parsed;
