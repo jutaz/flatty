@@ -13,7 +13,7 @@ install: ```npm install flatty```
 var flatty = require("flatty");
 var Store = require("flatty/stores/native");
 
-var pokemons = new flatty("./pokemons.json", {
+var pokemons = new flatty("./pokemons.db", {
     interval: 50, // In ms
     store: new Store()
 });
