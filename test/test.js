@@ -222,6 +222,18 @@ describe("Stores", function() {
     it("should have separator set to \\t", function() {
       expect(store.separator).to.be.equal("\t");
     });
+    it("should stringify sample data", function(done) {
+      var data = {
+        id: {
+          first: rand.generateKey(),
+          second: rand.generateKey()
+        }
+      };
+      store.stringify(data, function(processed) {
+        expect(processed).to.be.a("string").and.to.be.equal('meta: {"separator": "' + store.separator + '", "lineEnding": "' + store.lineEnding + '"}\n' + 'id' + store.separator + JSON.stringify(data.id) + store.lineEnding);
+        done();
+      });
+    });
   });
 });
 
