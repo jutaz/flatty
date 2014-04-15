@@ -196,6 +196,35 @@ describe("Flatty stress test", function() {
   });
 });
 
+describe("Stores", function() {
+  describe("Native store", function() {
+    var nativeStore = require("../stores/native");
+    var store = new nativeStore();
+    var parsedData;
+    it("should be a function", function() {
+      expect(store.stringify).to.be.an("function");
+    });
+    it("should have stringify method", function() {
+      expect(store.stringify).to.be.a("function");
+    });
+    it("should parse sample db", function(done) {
+      fs.readFile(__dirname+"/stores/native.db", function(err, data) {
+        store.parse(data, function(parsed) {
+          expect(parsed).to.be.an("object");
+          parsedData = parsed;
+          done();
+        });
+      });
+    });
+    it("should have lineEnding set to \\n", function() {
+      expect(store.lineEnding).to.be.equal("\n");
+    });
+    it("should have separator set to \\t", function() {
+      expect(store.separator).to.be.equal("\t");
+    });
+  });
+});
+
 after(function() {
   fs.unlinkSync(__dirname+"/test.db");
   fs.unlinkSync(__dirname+"/stress.db");
