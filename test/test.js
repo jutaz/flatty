@@ -20,56 +20,56 @@ describe('Flatty', function() {
       index: true
     });
     expect(db).to.be.an("object").and.to.be.a(flatty);
-    describe('#set()', function() {
-      it('should add new record to DB with random ID', function(done) {
-        db.set(data[0], function(id) {
-          expect(id).to.be.a("string");
-          data[0].id = id;
-          done();
-        });
-      });
-      it("should add new record with given ID", function(done) {
-        gen = rand.generateKey();
-        db.set(gen, data[1], function(id) {
-          expect(id).to.be.a("string").and.to.be.equal(gen);
-          data[1].id = id;
-          done();
-        });
+  });
+  describe('#set()', function() {
+    it('should add new record to DB with random ID', function(done) {
+      db.set(data[0], function(id) {
+        expect(id).to.be.a("string");
+        data[0].id = id;
+        done();
       });
     });
-    describe("#get()", function() {
-      it("should get all records", function(done) {
-        db.get(function(records) {
-          expect(records).to.be.an("array");
-          expect(records.length).to.be.equal(2);
-          done();
-        });
-      });
-      it("shold get one record", function(done) {
-        db.get(data[0].id, function(records) {
-          expect(records).to.be.an("object").and.to.be.equal(data[0]);
-          done();
-        });
+    it("should add new record with given ID", function(done) {
+      gen = rand.generateKey();
+      db.set(gen, data[1], function(id) {
+        expect(id).to.be.a("string").and.to.be.equal(gen);
+        data[1].id = id;
+        done();
       });
     });
-    describe("#find()", function() {
-      it("should find user with username = " + data[0].username, function(done) {
-        db.find({
-          username: data[0].username
-        }, function(records) {
-          expect(records).to.be.an("array");
-          expect(records.length).to.be.equal(1);
-          expect(records[0]).to.be.equal(data[0]);
-          done();
-        });
+  });
+  describe("#get()", function() {
+    it("should get all records", function(done) {
+      db.get(function(records) {
+        expect(records).to.be.an("array");
+        expect(records.length).to.be.equal(2);
+        done();
       });
     });
-    describe("#delete()", function() {
-      it("should delete user with username = " + data[1].username, function(done) {
-        db.delete(data[1].id, function() {
-          expect(db.data[data[1].id]).to.be(undefined);
-          done();
-        });
+    it("shold get one record", function(done) {
+      db.get(data[0].id, function(records) {
+        expect(records).to.be.an("object").and.to.be.equal(data[0]);
+        done();
+      });
+    });
+  });
+  describe("#find()", function() {
+    it("should find user with username = " + data[0].username, function(done) {
+      db.find({
+        username: data[0].username
+      }, function(records) {
+        expect(records).to.be.an("array");
+        expect(records.length).to.be.equal(1);
+        expect(records[0]).to.be.equal(data[0]);
+        done();
+      });
+    });
+  });
+  describe("#delete()", function() {
+    it("should delete user with username = " + data[1].username, function(done) {
+      db.delete(data[1].id, function() {
+        expect(db.data[data[1].id]).to.be(undefined);
+        done();
       });
     });
   });
@@ -124,7 +124,7 @@ describe("Flatty stress test", function() {
   });
   describe("#get()", function() {
     it("should try to get nonexistant record", function(done) {
-      db.get(rand.generateKey()+rand.generateKey(), function(record) {
+      db.get(rand.generateKey() + rand.generateKey(), function(record) {
         expect(record).to.be.equal(null);
         done();
       });
@@ -132,7 +132,9 @@ describe("Flatty stress test", function() {
   });
   describe("#find()", function() {
     it("should try to find nonexistant record", function(done) {
-      db.find({name: rand.generateKey()+rand.generateKey()}, function(record) {
+      db.find({
+        name: rand.generateKey() + rand.generateKey()
+      }, function(record) {
         expect(record).to.be.an("array");
         done();
       });
@@ -161,7 +163,9 @@ describe("Flatty stress test", function() {
   describe("#findRecursive()", function() {
     it("should pick one record", function(done) {
       var record = db.data[Object.keys(db.data)[0]];
-      db.findRecursive({name: record.name}, function(data) {
+      db.findRecursive({
+        name: record.name
+      }, function(data) {
         expect(data).to.be.an("array");
         expect(data.length).to.be.equal(1);
         expect(data[0]).to.be.equal(record);
@@ -169,7 +173,10 @@ describe("Flatty stress test", function() {
       });
     });
     it("should pick multiple records", function(done) {
-      db.findRecursive({likes: "Cake", pet: "Cat"}, function(data) {
+      db.findRecursive({
+        likes: "Cake",
+        pet: "Cat"
+      }, function(data) {
         expect(data).to.be.an("array");
         expect(data.length).to.be.above(1);
         done();
@@ -179,7 +186,9 @@ describe("Flatty stress test", function() {
   describe("#findIndexed()", function() {
     it("should pick one record", function(done) {
       var record = db.data[Object.keys(db.data)[0]];
-      db.findIndexed({name: record.name}, function(data) {
+      db.findIndexed({
+        name: record.name
+      }, function(data) {
         expect(data).to.be.an("array");
         expect(data.length).to.be.equal(1);
         expect(data[0]).to.be.equal(record);
@@ -187,7 +196,10 @@ describe("Flatty stress test", function() {
       });
     });
     it("should pick multiple records", function(done) {
-      db.findIndexed({likes: "Cake", pet: "Cat"}, function(data) {
+      db.findIndexed({
+        likes: "Cake",
+        pet: "Cat"
+      }, function(data) {
         expect(data).to.be.an("array");
         expect(data.length).to.be.above(1);
         done();
@@ -208,7 +220,7 @@ describe("Stores", function() {
       expect(store.stringify).to.be.a("function");
     });
     it("should parse sample db", function(done) {
-      fs.readFile(__dirname+"/stores/native.db", function(err, data) {
+      fs.readFile(__dirname + "/stores/native.db", function(err, data) {
         store.parse(data, function(parsed) {
           expect(parsed).to.be.an("object");
           parsedData = parsed;
@@ -238,6 +250,6 @@ describe("Stores", function() {
 });
 
 after(function() {
-  fs.unlinkSync(__dirname+"/test.db");
-  fs.unlinkSync(__dirname+"/stress.db");
+  fs.unlinkSync(__dirname + "/test.db");
+  fs.unlinkSync(__dirname + "/stress.db");
 });
