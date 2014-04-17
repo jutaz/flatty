@@ -5,7 +5,7 @@ function flatty(file, options) {
   if(!options) {
     options = {};
   }
-  if(!options.native) {
+  if("undefined" === typeof options.native) {
     options.native = true;
   }
   if(!options.native) {
