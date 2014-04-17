@@ -5,7 +5,16 @@ using namespace v8;
 
 Persistent<Function> engine::constructor;
 
-engine::engine(const Arguments& args) : args_(args) {}
+engine::engine(const Arguments& args) {
+  if(!args[0]->IsString()) {
+    ThrowException(Exception::TypeError(String::New("File argument must be a String.")));
+  } else if(args.Length() == 2 && !args[1]->IsObject()) {
+    ThrowException(Exception::TypeError(String::New("Options argument must be an Object.")));
+  } else if(args.Length() == 2) {
+    engine::options = args[1]->ToObject();
+  }
+  engine::file = args[0]->ToString();
+}
 
 engine::~engine() {}
 
