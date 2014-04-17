@@ -1,6 +1,6 @@
 {
   "targets": [{
     "target_name": "flatty",
-    "sources": ["lib/flatty.cc", "lib/engine.cc", "lib/engine.h"]
+    "sources": ["src/flatty.cc", "src/engine.cc", "src/engine.h"]
   }]
 }
