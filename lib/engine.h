@@ -1,4 +1,3 @@
-#define BUILDING_NODE_EXTENSION
 #ifndef ENGINE_H
 #define ENGINE_H
 
