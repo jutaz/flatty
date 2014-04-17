@@ -1,4 +1,7 @@
 #include <node.h>
+#include <stdio.h>
+#include <iostream>
+#include <uv.h>
 #include "engine.h"
 
 using namespace v8;
