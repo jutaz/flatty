@@ -19,7 +19,8 @@ describe('Flatty', function() {
   it("should return a new instance of flatty", function() {
     db = new flatty(__dirname + "/test.db", {
       interval: 20,
-      index: true
+      index: true,
+      native: false
     });
     expect(db).to.be.an("object").and.to.be.a(flattyJS);
   });
@@ -82,7 +83,8 @@ describe("Flatty stress test", function() {
   var db = new flatty(__dirname + "/stress.db", {
     interval: 20,
     index: true,
-    log: true
+    log: true,
+    native: false
   });
   describe("#set()", function() {
     it("shold set 1000 records", function(done) {
