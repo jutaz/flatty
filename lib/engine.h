@@ -7,6 +7,10 @@ class engine : public node::ObjectWrap {
  public:
   static void Init();
   static v8::Handle<v8::Value> NewInstance(const v8::Arguments& args);
+  v8::Handle<v8::Object> options;
+  v8::Handle<v8::String> file;
+  v8::Handle<v8::Number> tickInterval;
+  int changes;
 
  private:
   explicit engine(const v8::Arguments& args);
