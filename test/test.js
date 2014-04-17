@@ -1,5 +1,7 @@
 var expect = require('expect.js');
 var flatty = require("../main");
+var flattyJS = require("../lib/javascript");
+var flattyNative = require("../lib/native");
 var fs = require("fs");
 var rand = require("generate-key");
 
@@ -19,7 +21,7 @@ describe('Flatty', function() {
       interval: 20,
       index: true
     });
-    expect(db).to.be.an("object").and.to.be.a(flatty);
+    expect(db).to.be.an("object").and.to.be.a(flattyJS);
   });
   describe('#set()', function() {
     it('should add new record to DB with random ID', function(done) {
