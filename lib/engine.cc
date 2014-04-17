@@ -35,11 +35,8 @@ Handle<Value> engine::New(const Arguments& args) {
   HandleScope scope;
 
   if (args.IsConstructCall()) {
-
     engine* obj = new engine(args);
-
     obj->Wrap(args.This());
-
     return args.This();
   } else {
     const int argc = 1;
