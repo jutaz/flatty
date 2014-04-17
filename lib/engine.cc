@@ -39,18 +39,15 @@ Handle<Value> engine::New(const Arguments& args) {
     obj->Wrap(args.This());
     return args.This();
   } else {
-    const int argc = 1;
-    Local<Value> argv[argc] = { args[0] };
-    return scope.Close(constructor->NewInstance(argc, argv));
+    Handle<Value> argv[2] = { args[0], args[1]};
+    return scope.Close(constructor->NewInstance(args.Length(), argv));
   }
 }
 
 Handle<Value> engine::NewInstance(const Arguments& args) {
   HandleScope scope;
-
-  const unsigned argc = 1;
-  Handle<Value> argv[argc] = { args[0] };
-  Local<Object> instance = constructor->NewInstance(argc, argv);
+  Handle<Value> argv[2] = { args[0], args[1]};
+  Local<Object> instance = constructor->NewInstance(args.Length(), argv);
 
   return scope.Close(instance);
 }
