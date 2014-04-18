@@ -10,7 +10,8 @@ class engine : public node::ObjectWrap {
   v8::Handle<v8::Object> options;
   v8::Handle<v8::String> file;
   v8::Handle<v8::Number> tickInterval;
-  int changes;
+  unsigned int changes;
+  v8::Handle<v8::Object> data;
 
  private:
   explicit engine(const v8::Arguments& args);
