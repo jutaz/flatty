@@ -4,6 +4,12 @@ function nativeStore(options) {
   }
   this.separator = options.separator || null;
   this.lineEnding = options.lineEnd || null;
+  if (this.separator === null) {
+      this.separator = "null";
+  }
+  if (this.lineEnding === null) {
+      this.lineEnding = "null";
+  }
 }
 
 nativeStore.prototype.init = function() {
@@ -29,13 +35,14 @@ nativeStore.prototype.parse = function(data, callback) {
     this.lineEnding = meta.lineEnding;
     data = data.substr(newlinePos+1);
   }
-  splitted = data.split(this.lineEnding);
+  splitted = data.split('}' + this.lineEnding);
   for (var i in splitted) {
-    if (splitted[i] === '') {
+    if (splitted[i] === '' || new Buffer(splitted[i]).length < 2) {
       continue;
     }
+    splitted[i] += "}";
     id = splitted[i].substring(0, splitted[i].indexOf(this.separator));
-    parsed[id] = JSON.parse(splitted[i].substring(splitted[i].indexOf(this.separator) + 1));
+    parsed[id] = JSON.parse(splitted[i].substring(splitted[i].indexOf(this.separator) + this.separator.length));
     parsed[id].id = id;
   }
   callback && callback(parsed);
