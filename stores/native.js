@@ -35,13 +35,24 @@ nativeStore.prototype.parse = function(data, callback) {
     this.lineEnding = meta.lineEnding;
     data = data.substr(newlinePos+1);
   }
-  splitted = data.split('}' + this.lineEnding);
+  var regexp = new RegExp('}+' + this.lineEnding + '|]'+ this.lineEnding)
+  splitted = data.split(regexp);
   for (var i in splitted) {
     if (splitted[i] === '' || new Buffer(splitted[i]).length < 2) {
       continue;
     }
-    splitted[i] += "}";
     id = splitted[i].substring(0, splitted[i].indexOf(this.separator));
+    var symbol = splitted[i][splitted[i].indexOf(this.separator)+this.separator.length];
+    switch (symbol) {
+        case "{":
+            splitted[i] += "}";
+            break;
+        case "[":
+            splitted[i] += "]";
+            break;
+        default:
+            splitted[i] += "\"";
+    }
     parsed[id] = JSON.parse(splitted[i].substring(splitted[i].indexOf(this.separator) + this.separator.length));
     parsed[id].id = id;
   }
