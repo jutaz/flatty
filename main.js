@@ -99,6 +99,9 @@ engine.prototype.set = function(key, data, callback) {
     data = key;
     key = rand.generateKey();
   }
+  if (!key) {
+      key = rand.generateKey();
+  }
   if (this.data[key] && 'object' == typeof this.data[key]) {
     this.update(key, data, callback);
     return;
