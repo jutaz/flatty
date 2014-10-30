@@ -22,7 +22,7 @@ function engine(file, options) {
   this.ticker();
   this.buildIndex();
   ["delete", "update", "set"].forEach(function(event) {
-    this.on("record:" + event, this.log.bind(this, event))
+    this.on("record:" + event, this.log.bind(this, event));
   }.bind(this));
 }
 
@@ -35,13 +35,13 @@ engine.prototype.buildIndex = function() {
       this.index(i);
     }
   }
-}
+};
 
 engine.prototype.index = function(id, callback) {
   if (!this.options.index) {
     return;
   }
-  collection = this.data[id];
+  var collection = this.data[id];
   for (var i in collection) {
     if (i === "id") {
       continue;
@@ -58,7 +58,7 @@ engine.prototype.index = function(id, callback) {
       this.indexed[i][collection[i]].push(id);
     }
   }
-}
+};
 
 engine.prototype.log = function(action, data) {
   if (this.options.log) {
@@ -68,7 +68,7 @@ engine.prototype.log = function(action, data) {
       time: new Date().getTime()
     });
   }
-}
+};
 
 engine.prototype.get = function(key, callback) {
   if ('function' == typeof key) {
@@ -77,8 +77,8 @@ engine.prototype.get = function(key, callback) {
   }
   if (this.data[key] && 'object' == typeof this.data[key] || key === null) {
     if (key === null) {
-      arr = [];
-      data = this.data;
+      var arr = [];
+      var data = this.data;
       for (var i in data) {
         data[i].id = i;
         arr.push(data[i]);
@@ -91,7 +91,7 @@ engine.prototype.get = function(key, callback) {
   } else {
     callback && callback(null);
   }
-}
+};
 
 engine.prototype.set = function(key, data, callback) {
   if ('function' == typeof data) {
@@ -112,7 +112,7 @@ engine.prototype.set = function(key, data, callback) {
   callback && callback(key);
   this.changes++;
   this.emit("record:set", key);
-}
+};
 
 engine.prototype.update = function(key, data, callback) {
   for (var i in data) {
@@ -129,7 +129,7 @@ engine.prototype.update = function(key, data, callback) {
   callback && callback(key);
   this.changes++;
   this.emit("record:update", key);
-}
+};
 
 engine.prototype.delete = function(key, callback) {
   if (this.data[key] && 'object' == typeof this.data[key]) {
@@ -139,7 +139,7 @@ engine.prototype.delete = function(key, callback) {
     if (this.options.index) {
       for (var i in data) {
         if (this.indexed[i] && this.indexed[i][data[i]]) {
-          index = this.indexed[i][data[i]].indexOf(data.id);
+          var index = this.indexed[i][data[i]].indexOf(data.id);
           if (index > -1) {
             this.indexed[i][data[i]][index] = null;
             delete this.indexed[i][data[i]][index];
@@ -155,12 +155,12 @@ engine.prototype.delete = function(key, callback) {
   callback && callback();
   this.changes++;
   this.emit("record:delete", key);
-}
+};
 
 engine.prototype.option = function(key, val, callback) {
   this.options[key] = val;
   this.emit("option:change", key, val);
-}
+};
 
 engine.prototype.onOptionChange = function(key, val) {
   if (key === "index") {
@@ -172,21 +172,21 @@ engine.prototype.onOptionChange = function(key, val) {
       this.find = this.findRecursive;
     }
   }
-}
+};
 
 engine.prototype.find = function(obj, callback) {
   if (this.options.index) {
-    this.findIndexed(obj, callback)
+    this.findIndexed(obj, callback);
   } else {
     this.findRecursive(obj, callback);
   }
-}
+};
 
 engine.prototype.findIndexed = function(obj, callback) {
-  ret = [];
-  encounters = {};
-  arr = [];
-  search = Object.keys(obj);
+  var ret = [];
+  var encounters = {};
+  var arr = [];
+  var search = Object.keys(obj);
   for (var i in search) {
     if (this.indexed[search[i]] && this.indexed[search[i]][obj[search[i]]]) {
       arr = arr.concat(this.indexed[search[i]][obj[search[i]]]);
@@ -203,12 +203,12 @@ engine.prototype.findIndexed = function(obj, callback) {
   }, this);
   callback && callback(ret);
   this.emit("record:find", ret);
-}
+};
 
 engine.prototype.findRecursive = function(obj, callback) {
-  ret = [];
+  var ret = [];
   for (var i in this.data) {
-    matches = 0;
+    var matches = 0;
     for (var e in obj) {
       if (this.data[i][e] == obj[e]) {
         matches++;
@@ -222,7 +222,7 @@ engine.prototype.findRecursive = function(obj, callback) {
   }
   callback && callback(ret);
   this.emit("record:find", ret, true);
-}
+};
 
 engine.prototype.ticker = function() {
   this.locked = false;
@@ -231,7 +231,7 @@ engine.prototype.ticker = function() {
     this.log("memoryUsage", process.memoryUsage());
   }.bind(this), this.interval);
   this.tick.unref();
-}
+};
 
 engine.prototype.save = function() {
   if (this.locked || this.changes == 0) {
@@ -245,6 +245,6 @@ engine.prototype.save = function() {
     this.locked = false;
     this.changes = 0;
   }.bind(this));
-}
+};
 
 module.exports = engine;

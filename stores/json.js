@@ -4,7 +4,7 @@ function jsonStore() {
 
 jsonStore.prototype.init = function() {
   return "{}";
-}
+};
 
 jsonStore.prototype.stringify = function(data, callback) {
   try {
@@ -14,7 +14,7 @@ jsonStore.prototype.stringify = function(data, callback) {
   }
   callback && callback(data);
   return data;
-}
+};
 
 jsonStore.prototype.parse = function(data, callback) {
   try {
@@ -24,6 +24,6 @@ jsonStore.prototype.parse = function(data, callback) {
   }
   callback && callback(data);
   return data;
-}
+};
 
 module.exports = jsonStore;

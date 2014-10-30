@@ -14,34 +14,34 @@ function nativeStore(options) {
 
 nativeStore.prototype.init = function() {
   return "";
-}
+};
 
 nativeStore.prototype.stringify = function(data, callback) {
-  processed = 'meta: {"separator": "'+this.separator+'", "lineEnding": "'+this.lineEnding+'"}\n';
+  var processed = 'meta: {"separator": "'+this.separator+'", "lineEnding": "'+this.lineEnding+'"}\n';
   for (var i in data) {
     processed += i + this.separator + JSON.stringify(data[i]) + this.lineEnding;
   }
   callback && callback(processed);
   return processed;
-}
+};
 
 nativeStore.prototype.parse = function(data, callback) {
-  parsed = {};
+  var parsed = {};
   data = data.toString();
   if(data.indexOf("meta: ") === 0) {
-    newlinePos = data.indexOf("\n");
-    meta = JSON.parse(data.substr(6, newlinePos-6));
+    var newlinePos = data.indexOf("\n");
+    var meta = JSON.parse(data.substr(6, newlinePos-6));
     this.separator = meta.separator;
     this.lineEnding = meta.lineEnding;
     data = data.substr(newlinePos+1);
   }
   var regexp = new RegExp('}+' + this.lineEnding + '|]'+ this.lineEnding)
-  splitted = data.split(regexp);
+  var splitted = data.split(regexp);
   for (var i in splitted) {
     if (splitted[i] === '' || new Buffer(splitted[i]).length < 2) {
       continue;
     }
-    id = splitted[i].substring(0, splitted[i].indexOf(this.separator));
+    var id = splitted[i].substring(0, splitted[i].indexOf(this.separator));
     var symbol = splitted[i][splitted[i].indexOf(this.separator)+this.separator.length];
     switch (symbol) {
         case "{":
@@ -58,6 +58,6 @@ nativeStore.prototype.parse = function(data, callback) {
   }
   callback && callback(parsed);
   return parsed;
-}
+};
 
 module.exports = nativeStore;
